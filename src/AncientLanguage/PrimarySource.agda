@@ -6,10 +6,6 @@ open import Agda.Builtin.Nat
 open import Agda.Builtin.List public
 open import Agda.Builtin.String
 
-data Maybe (A : Set) : Set where
-  none : Maybe A
-  some : A → Maybe A
-
 append : {A : Set} → (xs ys : List A) → List A
 append [] ys = ys
 append (x ∷ xs) ys = x ∷ append xs ys
@@ -31,18 +27,18 @@ data Milestone : Set where
 record Word : Set where
   constructor word
   field
-    getPrefix : Maybe String
+    getPrefix : String
     getText : String
-    getSuffix : Maybe String
+    getSuffix : String
 
 data Content : Set where
   milestone : Milestone → Content
   word : Word → Content
 
 pattern v cn vn = milestone (verse (verse cn vn))
-pattern ws t s = word (word none t (some s))
-pattern w t = word (word none t (some " "))
-pattern wp p t s = word (word (some p) t (some s))
+pattern w t = word (word "" t "")
+pattern ws t s = word (word "" t s)
+pattern wp p t s = word (word p t s)
 pattern p = milestone paragraph
 
 record Source : Set where
